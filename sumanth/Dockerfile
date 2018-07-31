@@ -32,6 +32,8 @@ RUN apt-get install software-properties-common && \
     add-apt-repository ppa:george-edison55/cmake-3.x && \
     apt-get update
 
+RUN pip install sumanth/requirements.txt
+
 #ld config over ssh
 RUN ldconfig
 # ENV LD_LIBRARY_PATH="/usr/local/cuda/extras/CUPTI/lib64:/usr/local/nvidia/lib:/usr/local/nvidia/lib64"
