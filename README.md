@@ -22,18 +22,18 @@ Required nvidia-docker for GPU runs.
 Tested with nvidia-drivers (384,387,390,394)
 
 Packages:
-    * sudo
-    * git 
-    * wget 
-    * zsh 
-    * vim 
-    * zsh 
-    * htop 
-    * imagemagick 
-    * fdupes 
-    * libcurl4-gnutls-dev 
-    * wget 
-    * openssh-server 
+    * sudo  
+    * git   
+    * wget   
+    * zsh   
+    * vim   
+    * zsh   
+    * htop   
+    * imagemagick   
+    * fdupes   
+    * libcurl4-gnutls-dev   
+    * wget   
+    * openssh-server   
     * curl 
 
 ### Entrypoint script
