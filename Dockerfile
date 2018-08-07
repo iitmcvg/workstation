@@ -38,6 +38,12 @@ RUN ldconfig
 # ENV LD_LIBRARY_PATH="/usr/local/cuda/extras/CUPTI/lib64:/usr/local/nvidia/lib:/usr/local/nvidia/lib64"
 # RUN export LD_LIBRARY_PATH LD_LIBRARY_PATH
 
+#netaccess
+RUN apt update && \
+  apt install -y snapd && \
+  snap install netaccess
+
+
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["sh","/usr/local/bin/entrypoint.sh"]
 
