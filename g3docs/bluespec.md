@@ -19,21 +19,27 @@ export LM_LICENSE_FILE=27000@192.168.1.8:28000@10.21.226.183
 
 ## 3. Mount bluespec volume to /home/user
 
-`IP=$(ifconfig en0 | grep inet | awk '$1=="inet" {print $2}')`
+Allow for xhost access.
+
+`xhost + 127.0.0.1`
+
+Allow for xquartz access: 
+* Install the latest XQuartz X11 server and run it
+* Activate the option ‘Allow connections from network clients’ in XQuartz settings
+* Quit & restart XQuartz (to activate the setting)
 
 ```
 docker run -ti -d --name bluespec-varun \
--v ~/bluespec-mount:/home/varun \
+-v /abs/path/to/bluespec-mount:/home/varun \
 -p 11002:22 \
 -e USERNAME=varun \
--e DISPLAY=$IP:0 \
+-e DISPLAY=docker.for.mac.localhost:0 \
 -v /tmp/.X11-unix:/tmp/.X11-unix \
 iitmcvg/bluespec bash
 ```
 
-`xhost + $IP`
-
-## 4. Run container
+## 4. Run the container
 
 Run `docker attach bluespec-varun`
+Run `export DISPLAY=docker.for.mac.localhost:0`
 Run `bluespec &` 

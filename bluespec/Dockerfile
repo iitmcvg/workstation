@@ -34,7 +34,15 @@ RUN apt-get update && \
 apt-get install -y software-properties-common && \
 add-apt-repository ppa:george-edison55/cmake-3.x && \
 apt-get install -y cmake && \
-apt-get update
+apt-get update 
+
+# c++
+RUN apt-get install -y build-essential g++ && \
+apt-get install -y libxft2 libgmp-dev  && \
+ln -s /usr/lib/x86_64-linux-gnu/libgmp.so.10.3.0 /usr/lib/x86_64-linux-gnu/libgmp.so.3
+
+# tkinter
+RUN apt-get update && apt-get install -y tk-dev && rm -r /var/lib/apt/lists/*
 
 #ld config over ssh
 RUN ldconfig
