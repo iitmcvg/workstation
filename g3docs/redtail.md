@@ -6,6 +6,14 @@ Setup for the redtail containers
 
 ### Step 1: Build container
 
+Log in to NGC
+
+```
+docker login nvcr.io
+Username: $oauthtoken
+Password: <Your Key>
+```
+
 ```
 docker build -t iitmcvg/redtail redtail
 ```

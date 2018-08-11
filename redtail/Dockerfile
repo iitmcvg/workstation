@@ -113,7 +113,7 @@ RUN wget --quiet http://packages.osrfoundation.org/gazebo.key -O - | apt-key add
 WORKDIR ${HOME}
 RUN mkdir ./px4/ && cd ./px4/                                        \
     && git clone https://github.com/PX4/Firmware.git && cd Firmware/ \
-    && git checkout v1.4.4
+    && git checkout v1.4.4 
 
 # ROS Kinetic
 WORKDIR ${HOME}
