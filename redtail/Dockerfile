@@ -194,9 +194,18 @@ RUN apt-get install -qqy x11-apps
 #ld config over ssh
 RUN ldconfig
 
+# Set up zsh + zim
+RUN cd {$HOME} && sh -c "$(wget https://gist.githubusercontent.com/rsnk96/87229bd910e01f2ee7c35f96d7cb2f6c/raw/f068812ebd711ed01ebc4c128c8624730ab0dc81/build-zsh.sh -O -)" && \
+RUN git clone --recursive https://github.com/Eriner/zim.git ${ZDOTDIR:-${HOME}}/.zim && \
+ln -s $HOME/.zim/templates/zimrc $HOME/.zimrc && \
+ln -s $HOME/.zim/templates/zlogin $HOME/.zlogin && \
+ln -s $HOME/.zim/templates/zshrc $HOME/.zshrc
+
+# Lang configs for tensorboard
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
 
+# User entrypoints
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["sh","/usr/local/bin/entrypoint.sh"]
 
