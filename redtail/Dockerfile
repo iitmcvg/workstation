@@ -1,4 +1,4 @@
-FROM   nvcr.io/nvidia/tensorflow:18.05-py2
+FROM  nvcr.io/nvidia/tensorflow:18.05-py2
 LABEL maintainer caffe-maint@googlegroups.com
 
 # Basic packages
