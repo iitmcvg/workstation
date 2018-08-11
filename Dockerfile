@@ -43,8 +43,9 @@ apt-get update
 RUN ldconfig
 
 #netaccess
-#RUN apt-get update && \
+RUN apt-get update && \
   #curl -sSf https://static.rust-lang.org/rustup.sh | sh && \
+<<<<<<< HEAD
 #curl https://sh.rustup.rs -o rustup-init.sh && \
 #sh rustup-init.sh -y
 #RUN apt-get install -y libssl-dev 
@@ -81,6 +82,12 @@ COPY snapteld.conf /etc/snap/snapteld.conf
  #ln -s /bin/true /sbin/udevadm
 CMD systemctl start snap.service 
 CMD snap install netaccess
+=======
+curl https://sh.rustup.rs -o rustup-init.sh && \
+sh rustup-init.sh -y
+RUN apt-get install -y libssl-dev 
+CMD /bin/bash -c "source $HOME/.cargo/env; cargo install --git https://github.com/iitmcvg/iitm-netaccess-cmd" 
+>>>>>>> a9b4e0caec183c278419d56495b34043fad00a0a
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["sh","/usr/local/bin/entrypoint.sh"]
