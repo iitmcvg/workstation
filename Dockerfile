@@ -82,7 +82,6 @@ COPY snapteld.conf /etc/snap/snapteld.conf
 CMD systemctl start snap.service 
 CMD snap install netaccess
 
-
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["sh","/usr/local/bin/entrypoint.sh"]
 
