@@ -21,7 +21,7 @@ docker build -t iitmcvg/redtail redtail
 ### Step 2: Run container
 
 ```
-nvidia-docker run -it --rm --name uav \
+nvidia-docker run -it -d --name uav \
 --privileged \
 --network=host \
 -p 7002:22 \

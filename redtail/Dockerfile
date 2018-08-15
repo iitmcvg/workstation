@@ -78,7 +78,12 @@ RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364
                 && rm /usr/local/bin/gosu.asc \
                     && chmod +x /usr/local/bin/gosu
 
+# User entrypoints
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+ENTRYPOINT ["sh","/usr/local/bin/entrypoint.sh"]
+
 # GStreamer
+RUN apt-get update 
 RUN apt-get -y --no-install-recommends install \
     gstreamer1.0-plugins-base        \
     gstreamer1.0-plugins-bad         \
@@ -93,8 +98,8 @@ RUN apt-get -y --no-install-recommends install \
     v4l-utils
 
 # Gazebo
-WORKDIR ${HOME}
-RUN wget --quiet http://packages.osrfoundation.org/gazebo.key -O - | apt-key add - \
+#WORKDIR ${HOME}
+RUN cd /home/$USERNAME && wget --quiet http://packages.osrfoundation.org/gazebo.key -O - | apt-key add - \
     && sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable xenial main" > /etc/apt/sources.list.d/gazebo-stable.list' \
     && apt-get update && apt-get -y --no-install-recommends install \
         gazebo7         \
@@ -110,13 +115,13 @@ RUN wget --quiet http://packages.osrfoundation.org/gazebo.key -O - | apt-key add
     && pip install . && cd .. && rm -rf pymavlink && rm -rf message_definitions
 
 # PX4 firmware
-WORKDIR ${HOME}
+WORKDIR /home/$USERNAME
 RUN mkdir ./px4/ && cd ./px4/                                        \
     && git clone https://github.com/PX4/Firmware.git && cd Firmware/ \
     && git checkout v1.4.4 
 
 # ROS Kinetic
-WORKDIR ${HOME}
+WORKDIR /home/$USERNAME
 RUN apt-key adv --keyserver hkp://ha.pool.sks-keyservers.net:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116 \
     && sh -c 'echo "deb http://packages.ros.org/ros/ubuntu xenial main" > /etc/apt/sources.list.d/ros-latest.list' \
     && sh -c 'echo "deb http://packages.ros.org/ros-shadow-fixed/ubuntu/ xenial main" > /etc/apt/sources.list.d/ros-shadow.list' \
@@ -140,7 +145,7 @@ RUN echo 'source /opt/ros/kinetic/setup.bash' >> ${HOME}/.bashrc
 
 # Install OpenCV with CUDA support.
 # REVIEW alexeyk: JetPack 3.2 comes with OpenCV 3.3.1 _without_ CUDA support.
-WORKDIR ${HOME}
+WORKDIR /home/$USERNAME
 RUN git clone https://github.com/opencv/opencv.git && cd opencv \
     && git checkout 3.3.1                   \
     && mkdir build && cd build              \
@@ -160,10 +165,10 @@ RUN git clone https://github.com/opencv/opencv.git && cd opencv \
     && cd ${HOME} && rm -rf ./opencv/
 
 # Setup catkin workspace
-ENV CATKIN_WS ${HOME}/ws
-COPY ./scripts/init_workspace.sh ${HOME}
-COPY .bashrc ${HOME}
-RUN ${HOME}/init_workspace.sh
+ENV CATKIN_WS /home/$USERNAME/ws
+COPY ./scripts/init_workspace.sh /home/$USERNAME/
+COPY .bashrc /home/$USERNAME/
+RUN /home/$USERNAME//init_workspace.sh
 
 # To be run by a user after creating a container.
 COPY ./scripts/build_redtail.sh ${HOME}
@@ -195,18 +200,14 @@ RUN apt-get install -qqy x11-apps
 RUN ldconfig
 
 # Set up zsh + zim
-RUN cd {$HOME} && sh -c "$(wget https://gist.githubusercontent.com/rsnk96/87229bd910e01f2ee7c35f96d7cb2f6c/raw/f068812ebd711ed01ebc4c128c8624730ab0dc81/build-zsh.sh -O -)" && \
-RUN git clone --recursive https://github.com/Eriner/zim.git ${ZDOTDIR:-${HOME}}/.zim && \
-ln -s $HOME/.zim/templates/zimrc $HOME/.zimrc && \
-ln -s $HOME/.zim/templates/zlogin $HOME/.zlogin && \
-ln -s $HOME/.zim/templates/zshrc $HOME/.zshrc
+#RUN cd /home/$USERNAME && sh -c "$(wget https://gist.githubusercontent.com/rsnk96/87229bd910e01f2ee7c35f96d7cb2f6c/raw/f068812ebd711ed01ebc4c128c8624730ab0dc81/build-zsh.sh -O -)" && \
+#RUN git clone --recursive https://github.com/Eriner/zim.git /home/$USERNAME/.zim && \
+#ln -s /home/$USERNAME/.zim/templates/zimrc $HOME/.zimrc && \
+#ln -s /home/$USERNAME/.zim/templates/zlogin $HOME/.zlogin && \
+#ln -s /home/$USERNAME/.zim/templates/zshrc $HOME/.zshrc
 
 # Lang configs for tensorboard
 ENV LANG C.UTF-8
 ENV LC_ALL C.UTF-8
-
-# User entrypoints
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
-ENTRYPOINT ["sh","/usr/local/bin/entrypoint.sh"]
 
 WORKDIR /workspace
