@@ -82,12 +82,13 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y --no-ins
         curl &&\
         rm -rf /var/lib/apt/lists/* &&\
         apt-get clean
-RUN pip install -y \
+
+RUN pip3 install \
 		numpy \
     scipy \
 	nose \
     h5py \
-    skimage \
+    scikit-image \
     matplotlib \
     pandas \
 	sklearn \
@@ -100,9 +101,7 @@ RUN pip install -y \
     Pillow \
     pygments \
     six \
-    sphinx \
-    wheel \
-    zmq --user
+    wheel --user
 
 RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 && \
     curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.10/gosu-$(dpkg --print-architecture)" \
@@ -114,7 +113,7 @@ RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364
 RUN apt-get update && \
 apt-get install -y software-properties-common && \
 add-apt-repository ppa:george-edison55/cmake-3.x && \
-apt-get install cmake && \
+apt-get install -y cmake && \
 apt-get update
 
 RUN git clone --depth 1 https://github.com/opencv/opencv.git /root/opencv && \
