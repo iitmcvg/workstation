@@ -93,6 +93,7 @@ RUN apt-get -y --no-install-recommends install \
     v4l-utils
 
 # Gazebo
+RUN echo ${HOME}
 WORKDIR ${HOME}
 RUN wget --quiet http://packages.osrfoundation.org/gazebo.key -O - | apt-key add - \
     && sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable xenial main" > /etc/apt/sources.list.d/gazebo-stable.list' \
