@@ -17,4 +17,5 @@ usermod -aG sudo $USERNAME
 echo "$USERNAME:test" | chpasswd
 service ssh restart
 
+sudo chage -d 0 $USERNAME
 exec /usr/local/bin/gosu $USERNAME "$@"

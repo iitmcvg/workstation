@@ -34,7 +34,7 @@ RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364
 RUN apt-get update && \
 apt-get install -y software-properties-common && \
 add-apt-repository ppa:george-edison55/cmake-3.x && \
-apt-get install cmake && \
+apt-get install -y cmake && \
 apt-get update
 
 
