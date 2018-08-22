@@ -98,8 +98,14 @@ RUN apt-get -y --no-install-recommends install \
     v4l-utils
 
 # Gazebo
+<<<<<<< HEAD
+RUN echo ${HOME}
+WORKDIR ${HOME}
+RUN wget --quiet http://packages.osrfoundation.org/gazebo.key -O - | apt-key add - \
+=======
 #WORKDIR ${HOME}
 RUN cd /home/$USERNAME && wget --quiet http://packages.osrfoundation.org/gazebo.key -O - | apt-key add - \
+>>>>>>> 092d0caae0208b829396f8f26b10a485c7736d63
     && sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable xenial main" > /etc/apt/sources.list.d/gazebo-stable.list' \
     && apt-get update && apt-get -y --no-install-recommends install \
         gazebo7         \
