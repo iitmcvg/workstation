@@ -31,6 +31,13 @@ RUN apt-get update \
         libgoogle-glog-dev \
         libopencv-dev \
         libsuitesparse-dev \
+        libpng-dev \
+        libjpeg-dev \
+        libtiff-dev \
+        libglu1-mesa-dev \
+        libxmu-dev \
+        libxi-dev \
+        mercurial \
         python-dev \
         python-numpy \
         python-opencv \
@@ -40,10 +47,6 @@ RUN apt-get update \
         python-scipy \
         python-yaml \
         wget \
-        libglew-dev \
-        libglu1-mesa-dev \
-        freeglut3-dev \
-        mesa-common-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -61,6 +64,37 @@ RUN \
     rm -rf /source/ceres-solver-1.14.0 && \
     rm -f /source/ceres-solver-1.14.0.tar.gz
 
+
+#Eigen (Required)
+
+RUN hg clone https://bitbucket.org/eigen/eigen#3.2 && \
+    mkdir eigen_build && cd eigen_build && \
+    cmake . ../eigen && \
+    make && sudo make install && \
+    cd ..
+
+#Boost (Required)
+RUN apt-get -y install libboost-iostreams-dev libboost-program-options-dev libboost-system-dev libboost-serialization-dev
+
+#OpenCV (Required)
+RUN apt-get -y install libopencv-dev
+
+#CGAL (Required)
+RUN apt-get -y install libcgal-dev libcgal-qt5-dev
+
+#VCGLib (Required)
+RUN git clone https://github.com/cdcseacave/VCG.git vcglib
+
+#GLFW3 (Optional)
+RUN apt-get -y install freeglut3-dev libglew-dev libglfw3-dev
+
+#OpenMVS
+RUN git clone https://github.com/cdcseacave/openMVS.git openMVS && \
+    mkdir openMVS_build && cd openMVS_build && \
+    cmake . ../openMVS -DCMAKE_BUILD_TYPE=Release -DVCG_ROOT="/home/$USERNAME/vcglib"
+
+#Install OpenMVS library (optional):
+RUN make -j2 && make install
 
 # Install opengv from source
 RUN \
@@ -105,41 +139,6 @@ RUN \
                 cloudpickle==0.4.0 \
                 loky==1.2.1 \
                 --user
-
-# Install Pangolin from source
-Run \
-    mkdir -p /source && cd source && \
-    git clone https://github.com/stevenlovegrove/Pangolin.git && \
-    cd /source/Pangolin && \
-    mkdir -p /source/Pangolin/build && \
-    cd /source/Pangolin/build && \
-    cmake .. && \
-    cmake --build . && \
-    rm -rf /source/Pangolin 
-# cuda 9.0
-ARG repository
-FROM nvidia/cuda:9.0-devel-ubuntu16.04
-LABEL maintainer "NVIDIA CORPORATION <cudatools@nvidia.com>"
-
-ENV CUDNN_VERSION 7.2.1.38
-LABEL com.nvidia.cudnn.version="${CUDNN_VERSION}"
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-            libcudnn7=$CUDNN_VERSION-1+cuda9.0 \
-            libcudnn7-dev=$CUDNN_VERSION-1+cuda9.0 && \
-    apt-mark hold libcudnn7 && \
-    rm -rf /var/lib/apt/lists/*
-
-
-
-
-COPY requirements.txt /home/$USERNAME/requirements.txt
-
-# Open SFM 
-RUN cd /home/$USERNAME && pip install -r requirements.txt && \
-    git clone https://github.com/mapillary/OpenSfM.git && \
-    cd OpenSfM && \
-    python setup.py build
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["sh","/usr/local/bin/entrypoint.sh"]
