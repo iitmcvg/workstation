@@ -1,5 +1,15 @@
-FROM ubuntu:16.04
-LABEL maintainer caffe-maint@googlegroups.com
+
+FROM nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04 
+LABEL maintainer "NVIDIA CORPORATION <cudatools@nvidia.com>"
+
+ENV CUDNN_VERSION 7.2.1.38
+
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+            libcudnn7=$CUDNN_VERSION-1+cuda9.0 \
+            libcudnn7-dev=$CUDNN_VERSION-1+cuda9.0 && \
+    apt-mark hold libcudnn7 && \
+    rm -rf /var/lib/apt/lists/*
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y --no-install-recommends \
         git \
@@ -40,6 +50,10 @@ RUN apt-get update \
         python-scipy \
         python-yaml \
         wget \
+        libglew-dev \
+        libglu1-mesa-dev \
+        freeglut3-dev \
+        mesa-common-dev \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
@@ -101,6 +115,19 @@ RUN \
                 cloudpickle==0.4.0 \
                 loky==1.2.1 \
                 --user
+
+# Install Pangolin from source
+Run \
+    mkdir -p /source && cd source && \
+    git clone https://github.com/stevenlovegrove/Pangolin.git && \
+    cd /source/Pangolin && \
+    mkdir -p /source/Pangolin/build && \
+    cd /source/Pangolin/build && \
+    cmake .. && \
+    cmake --build . && \
+    rm -rf /source/Pangolin 
+
+
 
 COPY requirements.txt /home/$USERNAME/requirements.txt
 
