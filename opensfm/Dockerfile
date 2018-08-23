@@ -110,7 +110,7 @@ RUN cd /home/$USERNAME && pip install -r requirements.txt && \
     cd OpenSfM && \
     python setup.py build
 
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY opensfm/entrypoint.sh /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["sh","/usr/local/bin/entrypoint.sh"]
 
 WORKDIR /workspace
