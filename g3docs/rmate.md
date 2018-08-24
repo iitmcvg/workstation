@@ -50,3 +50,18 @@ For more info see this [blog post about rmate](http://blog.macromates.com/2011/m
 - [Bash](https://github.com/aurora/rmate) by Harald Lapp
 - [Python](https://github.com/sclukey/rmate-python) by Steven Clukey
 - [Perl](https://github.com/davidolrik/rmate-perl) by David Jack Wange Olrik
+
+# Common Issues
+
+* Port (tcp/udp) already in use: 
+	- Use `ps aux | grep XXXX` where XXX is the port number to kill the process, or shift to a different port
+
+* Rmate running issues when reverse tunnelling has been setup: 
+```
+/usr/bin/rmate:174:in `readline': end of file reached (EOFError)  from /usr/bin/rmate:174:in `connect_and_handle_cmds'  from /usr/bin/rmate:223:in `block in <main>'  from /usr/bin/rmate:222:in `fork'  from /usr/bin/rmate:222:in `<main>'
+```
+	- Ensure a textmate client on atom or vscode etc is listening to the port.
+
+# Contribute to the Docs
+
+Feel free to issue pull requests to the repo at `github.com/iitmcvg/workstation`
