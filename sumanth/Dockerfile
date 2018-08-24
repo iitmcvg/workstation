@@ -28,11 +28,10 @@ RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364
                     && chmod +x /usr/local/bin/gosu
 
 # Cmake
-RUN apt-get install software-properties-common && \
-    add-apt-repository ppa:george-edison55/cmake-3.x && \
-    apt-get update
-
-RUN pip install sumanth/requirements.txt
+RUN apt-get -y update && \ 
+apt-get install -y software-properties-common && \
+add-apt-repository -y ppa:george-edison55/cmake-3.x && \
+apt-get -y update
 
 #ld config over ssh
 RUN ldconfig
