@@ -19,4 +19,3 @@ service ssh restart
 
 sudo chage -d 0 $USERNAME
 exec /usr/local/bin/gosu $USERNAME "$@"
-
