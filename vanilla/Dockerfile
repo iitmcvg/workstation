@@ -1,5 +1,5 @@
 FROM ubuntu:16.04
-LABEL maintainer caffe-maint@googlegroups.com
+LABEL maintainer cvigroup.cfi@gmail.com
 
 
 RUN apt-get update && apt-get install -y \
@@ -19,7 +19,6 @@ RUN apt-get update && apt-get install -y \
 		libtiff5-dev \
 		libwebp-dev \
 		libzmq3-dev \
-		nano \
 		pkg-config \
 		software-properties-common \
 		unzip \
@@ -55,7 +54,6 @@ RUN apt-get update && apt-get install -y \
         python3-pip \
 		ant \
 		default-jdk \
-		doxygen \
 		&& \
 	apt-get clean && \
 	apt-get autoremove && \
@@ -63,11 +61,7 @@ RUN apt-get update && apt-get install -y \
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y --no-install-recommends \
         git \
-        wget \
-	fuse \
-	snapd \
-	snap-confine \ 
-	squashfuse \ 
+        wget \ 
 	zsh \
         vim \
         sudo \
@@ -86,11 +80,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y --no-ins
 RUN pip3 install \
 		numpy \
     scipy \
-	nose \
     h5py \
     scikit-image \
     matplotlib \
-    pandas \
 	sklearn \
 	sympy \
     ipython \
@@ -99,7 +91,6 @@ RUN pip3 install \
     jupyter \
     path.py \
     Pillow \
-    pygments \
     six \
     wheel --user
 
@@ -124,7 +115,7 @@ RUN git clone --depth 1 https://github.com/opencv/opencv.git /root/opencv && \
 	make -j"$(nproc)"  && \
 	make install && \
 	ldconfig && \
-	echo 'ln /dev/null /dev/raw1394' >> ~/.bashrc
+	echo 'ln /dev/null /dev/raw1394' >> /home/$USERNAME/.bashrc
 
 
 #ld config over ssh
