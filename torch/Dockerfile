@@ -1,14 +1,9 @@
 FROM  nvcr.io/nvidia/pytorch:18.07-py3
 LABEL maintainer caffe-maint@googlegroups.com
 
-
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y --no-install-recommends \
         git \
         wget \
-        fuse \
-        snapd \
-        snap-confine \ 
-        squashfuse \ 
         zsh \
         vim \
         sudo \

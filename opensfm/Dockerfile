@@ -1,15 +1,6 @@
 
-FROM nvidia/cuda:9.0-cudnn7-devel-ubuntu16.04 
-LABEL maintainer "NVIDIA CORPORATION <cudatools@nvidia.com>"
-
-ENV CUDNN_VERSION 7.2.1.38
-
-
-RUN apt-get update && apt-get install -y --no-install-recommends \
-            libcudnn7=$CUDNN_VERSION-1+cuda9.0 \
-            libcudnn7-dev=$CUDNN_VERSION-1+cuda9.0 && \
-    apt-mark hold libcudnn7 && \
-    rm -rf /var/lib/apt/lists/*
+FROM nvcr.io/nvidia/cuda:9.0-cudnn7.1-devel-ubuntu16.04
+LABEL maintainer "cvigroup.cfi@gmail.com"
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y --no-install-recommends \
         git \
@@ -41,14 +32,13 @@ RUN apt-get update \
         libgoogle-glog-dev \
         libopencv-dev \
         libsuitesparse-dev \
-        python-dev \
-        python-numpy \
-        python-opencv \
-        python-pip \
+        python3-dev \
+        python3-numpy \
+        python3-pip \
         python-pyexiv2 \
-        python-pyproj \
-        python-scipy \
-        python-yaml \
+        python3-pyproj \
+        python3-scipy \
+        python3-yaml \
         wget \
         libglew-dev \
         libglu1-mesa-dev \
@@ -102,7 +92,7 @@ RUN ldconfig
 
 # Install python requirements
 RUN \
-    pip install exifread==2.1.2 \
+    pip3 install exifread==2.1.2 \
                 gpxpy==1.1.2 \
                 networkx==1.11 \
                 numpy \
@@ -116,6 +106,17 @@ RUN \
                 loky==1.2.1 \
                 --user
 
+# Source opencv3
+RUN git clone --depth 1 https://github.com/opencv/opencv.git /root/opencv && \
+        cd /root/opencv && \
+        mkdir build && \
+        cd build && \
+        cmake -DWITH_QT=ON -DWITH_OPENGL=ON -DFORCE_VTK=ON -DWITH_TBB=ON -DWITH_GDAL=ON -DWITH_XINE=ON -DBUILD_EXAMPLES=ON .. && \
+        make -j4  && \
+        make install && \
+        ldconfig && \
+        echo 'ln /dev/null /dev/raw1394' >> ~/.bashrc && cat ~/.bashrc >> ~/.zshrc 
+
 # Install Pangolin from source
 Run \
     mkdir -p /source && cd source && \
@@ -127,17 +128,12 @@ Run \
     cmake --build . && \
     rm -rf /source/Pangolin 
 
-
-
-COPY requirements.txt /home/$USERNAME/requirements.txt
-
-# Open SFM 
-RUN cd /home/$USERNAME && pip install -r requirements.txt && \
-    git clone https://github.com/mapillary/OpenSfM.git && \
+RUN git clone https://github.com/mapillary/OpenSfM.git && \
     cd OpenSfM && \
-    python setup.py build
+    2to3 setup.py && \
+    python3 setup.py build
 
-COPY opensfm/entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["sh","/usr/local/bin/entrypoint.sh"]
 
 WORKDIR /workspace
