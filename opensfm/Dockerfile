@@ -27,7 +27,7 @@ RUN apt-get update \
         build-essential \
         cmake \
         libatlas-base-dev \
-        libboost-python-dev \
+        libboost-all-dev \
         libeigen3-dev \
         libgoogle-glog-dev \
         libopencv-dev \
@@ -47,6 +47,10 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
+#RUN echo "Python 2 die die die" && \
+#sudo ln -s /usr/bin/pip3 /usr/bin/pip && \
+#sudo mv /usr/bin/python /usr/bin/python.old && \
+#sudo ln -s /usr/bin/python3 /usr/bin/python 	
 
 # Install Ceres from source
 RUN \
@@ -61,14 +65,22 @@ RUN \
     rm -rf /source/ceres-solver-1.14.0 && \
     rm -f /source/ceres-solver-1.14.0.tar.gz
 
-
-# Install opengv from source
-RUN \
+RUN apt-get update
+RUN apt-get install -y libblkid-dev e2fslibs-dev libboost-all-dev libaudit-dev
+# Link boost libs
+RUN cd /usr/lib/x86_64-linux-gnu/ && ln -s libboost_python-py3x.so libboost_python3.so && cd / && \
+#Install opengv from source
+#RUN \
     mkdir -p /source && cd /source && \
     git clone https://github.com/paulinus/opengv.git && \
     cd /source/opengv && \
     mkdir -p build && cd build && \
-    cmake .. -DBUILD_TESTS=OFF -DBUILD_PYTHON=ON && \
+    cmake .. -DBUILD_TESTS=OFF \
+             -DBUILD_PYTHON=ON \
+             -DBUILD_FOR_PYTHON3=ON \
+             -DBOOST_PYTHON3_COMPONENT=python-py36 \
+             -DPYTHON_INSTALL_DIR=/usr/local/lib/python3.6/dist-packages/ \
+             && \
     make install && \
     cd / && \
     rm -rf /source/opengv
