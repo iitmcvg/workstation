@@ -1,4 +1,4 @@
-FROM  nvcr.io/nvidia/pytorch:18.07-py3
+FROM  nvcr.io/nvidia/pytorch:18.08-py3
 LABEL maintainer caffe-maint@googlegroups.com
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y --no-install-recommends \
@@ -35,6 +35,11 @@ apt-get update
 
 #ld config over ssh
 RUN ldconfig
+
+# Oh my zsh
+RUN ["apt-get", "update"]
+RUN ["apt-get", "install", "-y", "zsh"]
+RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["sh","/usr/local/bin/entrypoint.sh"]

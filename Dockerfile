@@ -1,4 +1,4 @@
-FROM  nvcr.io/nvidia/tensorflow:18.07-py3
+FROM  nvcr.io/nvidia/tensorflow:18.08-py3
 LABEL maintainer caffe-maint@googlegroups.com
 
 
@@ -42,46 +42,12 @@ apt-get update
 #ld config over ssh
 RUN ldconfig
 
-#netaccess
-RUN apt-get update
-  #curl -sSf https://static.rust-lang.org/rustup.sh | sh && \
-#curl https://sh.rustup.rs -o rustup-init.sh && \
-#sh rustup-init.sh -y
-#RUN apt-get install -y libssl-dev 
-#RUN /bin/bash -c "source $HOME/.cargo/env; cargo install --git https://github.com/j-jith/iitm-netaccess-cmd" 
+# Oh my zsh
+RUN ["apt-get", "update"]
+RUN ["apt-get", "install", "-y", "zsh"]
+RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true
 
-#  apt-get install -y snapd && \
-ENV PATH "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin"
-ARG BUILD_DATE
-ARG SNAP_VERSION=latest
-
-ENV SNAP_VERSION=${SNAP_VERSION}
-ENV SNAP_TRUST_LEVEL=0
-ENV SNAP_LOG_LEVEL=1
-ENV CI_URL=https://s3-us-west-2.amazonaws.com/snap.ci.snap-telemetry.io
-
-LABEL vendor="Intelsdi-X" \
-      name="Snap Ubuntu 16.04" \
-      license="Apache 2.0" \
-      build-date=$BUILD_DATE \
-      io.snap-telemetry.snap.version=$SNAP_VERSION \
-      io.snap-telemetry.snap.version.is-beta=
-
-EXPOSE 8181
-
-ADD ${CI_URL}/snap/${SNAP_VERSION}/linux/x86_64/snapteld  /opt/snap/sbin/snapteld
-ADD ${CI_URL}/snap/${SNAP_VERSION}/linux/x86_64/snaptel  /opt/snap/bin/snaptel
-COPY init_snap /usr/local/bin/init_snap
-COPY snapteld.conf /etc/snap/snapteld.conf
-
-#ENV LANG C.UTF-8
-#ENV LC_ALL C.UTF-8
-#RUN apt-get clean && \
- #dpkg-divert --local --rename --add /sbin/udevadm && \
- #ln -s /bin/true /sbin/udevadm
-CMD systemctl start snap.service 
-CMD snap install netaccess
-
+# Entrypoint
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["sh","/usr/local/bin/entrypoint.sh"]
 
