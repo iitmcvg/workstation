@@ -12,6 +12,15 @@ export HOME=/home/$USERNAME
 export PATH=/home/user/bin:/usr/local/bin:/usr/local/nvidia/bin:/usr/local/cuda/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/user/local/bin/
 export LD_LIBRARY_PATH=/usr/local/cuda/extras/CUPTI/lib64:/usr/local/nvidia/lib:/usr/local/nvidia/lib64
 
+# VNC
+export DISPLAY=:20
+Xvfb :20 -screen 0 1366x768x16 &
+x11vnc -passwd testVNC -display :20 -N -forever &
+
+echo "Copying zshrc's"
+cp /media/home/varun/.zshrc /media/$USERNAME/.zshrc
+cp -r /media/home/varun/${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/zsh-autosuggestions /media/home/$USERNAME/${ZSH_CUSTOM:-~/.oh-my-zsh/custom}/plugins/
+
 usermod -aG sudo $USERNAME
 
 echo "$USERNAME:test" | chpasswd

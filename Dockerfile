@@ -1,10 +1,10 @@
-FROM  nvcr.io/nvidia/tensorflow:18.08-py3
+FROM  nvcr.io/nvidia/tensorflow:18.09-py3
 LABEL maintainer caffe-maint@googlegroups.com
 
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y --no-install-recommends \
+        aria2 \
         git \
-        wget \
 	fuse \
 	snapd \
 	snap-confine \ 
@@ -12,13 +12,14 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y --no-ins
 	zsh \
         vim \
         sudo \
-        zsh \
         htop \
         imagemagick \
+        man \
         fdupes \
 	openssl \
         libcurl4-gnutls-dev \
         wget \
+        tmux \
         openssh-server \
         curl &&\
         rm -rf /var/lib/apt/lists/* &&\
@@ -38,6 +39,9 @@ add-apt-repository ppa:george-edison55/cmake-3.x && \
 apt-get install -y cmake && \
 apt-get update
 
+# Pip installs
+RUN python3 -m pip install opencv-contrib-python
+
 
 #ld config over ssh
 RUN ldconfig
@@ -46,6 +50,15 @@ RUN ldconfig
 RUN ["apt-get", "update"]
 RUN ["apt-get", "install", "-y", "zsh"]
 RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true
+
+# Rmate
+RUN curl -Lo /bin/rmate https://raw.githubusercontent.com/textmate/rmate/master/bin/rmate && \
+        chmod a+x /bin/rmate
+
+# Display VNC
+RUN apt-get install -y x11vnc
+EXPOSE 5920
+ENV DISPLAY :20
 
 # Entrypoint
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh

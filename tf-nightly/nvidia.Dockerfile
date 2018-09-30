@@ -1,18 +1,4 @@
-# Copyright 2018 The TensorFlow Authors. All Rights Reserved.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-# You may obtain a copy of the License at
-#
-#     http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS,
-# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-# See the License for the specific language governing permissions and
-# limitations under the License.
-# ============================================================================
-#
+
 # THIS IS A GENERATED DOCKERFILE.
 #
 # This file was assembled from multiple pieces, whose use is documented
@@ -39,6 +25,7 @@
 FROM nvidia/cuda:9.0-base-ubuntu16.04
 # Pick up some TF dependencies
 RUN apt-get update && apt-get install -y --no-install-recommends \
+        aria2 \
         build-essential \
         curl \
         cuda-command-line-tools-9-0 \
@@ -49,6 +36,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
         cuda-cusparse-9-0 \
         fdupes \
         htop \
+        man \
         imagemagick \
         libcudnn7=7.2.1.38-1+cuda9.0 \
         libnccl2=2.2.13-1+cuda9.0 \
@@ -77,7 +65,7 @@ RUN apt-get update && \
         apt-get install libnvinfer4=4.1.2-1+cuda9.0
 
 ARG USE_PYTHON_3_NOT_2=True
-ARG _PY_SUFFIX=${USE_PYTHON_3_NOT_2:+3}
+ARG _PY_SUFFIX=${USE_PYTHON_3_NOT_2:+3.6}
 ARG _PIP_SUFFIX=${USE_PYTHON_3_NOT_2:+3}
 ARG PYTHON=python${_PY_SUFFIX}
 ARG PIP=pip${_PIP_SUFFIX}
@@ -100,17 +88,25 @@ RUN apt-get update && \
 RUN ldconfig
 
 RUN apt-get update && \
-    add-apt-repository ppa:deadsnakes/ppa \
-    && apt-get install -y \
+    add-apt-repository ppa:jonathonf/python-3.6 &&\
+    apt-get update && \
+    apt-get install -y \
     ${PYTHON} \
-    ${PYTHON}-pip
+    python-pip
 
-RUN ${PIP} install --upgrade \
+RUN wget https://bootstrap.pypa.io/get-pip.py && \
+    python3.6 get-pip.py
+    
+RUN ${PYTHON} -m pip install --upgrade \
     pip \
-    setuptools
+    opencv-python \
+    numpy \
+    matplotlib \
+    scipy \
+    setuptools 
 
 ARG TF_PACKAGE=tf-nightly-gpu
-RUN ${PIP} install ${TF_PACKAGE}
+RUN ${PYTHON} -m pip install ${TF_PACKAGE} 
 
 RUN chmod a+rwx /etc/bash.bashrc
 
@@ -118,6 +114,15 @@ RUN chmod a+rwx /etc/bash.bashrc
 RUN ["apt-get", "update"]
 RUN ["apt-get", "install", "-y", "zsh"]
 RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -O - | zsh || true
+
+# Rmate
+RUN curl -Lo /bin/rmate https://raw.githubusercontent.com/textmate/rmate/master/bin/rmate && \
+        chmod a+x /bin/rmate
+
+# Display VNC
+RUN apt-get install -y x11vnc
+EXPOSE 5920
+ENV DISPLAY :20
 
 # Entrypoint
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
