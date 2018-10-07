@@ -1,4 +1,4 @@
-FROM  nvcr.io/nvidia/tensorflow:18.09-py3
+FROM  nvcr.io/nvidia/tensorflow:18.08-py3
 LABEL maintainer caffe-maint@googlegroups.com
 
 

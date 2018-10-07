@@ -20,5 +20,5 @@ nvidia-docker run -it -d --name $1 \
 -p $PORT_SSH:22 -p $PORT_VNC:5920 \
 -e USERNAME=$1 \
 -v /media/home/$1:/home/$1 \
--v /media/ssd/$1:/mnt/$1 \
+-v /media/ssda/$1:/mnt/$1 \
 iitmcvg/$2 bash
