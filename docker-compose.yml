@@ -1,0 +1,55 @@
+version: '2.3'
+services:
+  # nvidia:
+  #   image: nvidia/cuda
+  #   runtime: nvidia
+  #   command: nvidia-smi
+# Varun
+  varun:
+    image: iitmcvg/workstation
+    runtime: nvidia
+    command: bash
+    ports:
+      - "1002:22"
+      - "1003:5920"
+    volumes:
+      - /media/home/varun:/home/varun
+      - /mnt/ssda/varun:/mnt/ssd
+      - /media/iitmcvg/VARUN_CVI:/mnt/CVI_usb
+    tty: true
+    stdin_open: true
+    environment:
+      - USERNAME=varun
+
+  minio:
+    image: minio/minio
+    command: server /data
+    ports:
+      - "9000:9000"
+    volumes:
+      - /media/iitmcvg/VARUN_CVI:/data
+      - /mnt/config:/root/.minio 
+    tty: true
+    stdin_open: false
+    environment:
+      - TZ="Asia/Kolkata"
+      - "MINIO_SECRET_KEY=iitmcvg/minio/usb1"
+      - "MINIO_ACCESS_KEY=iitmcvg"
+
+# Anand
+  anand:
+    image: iitmcvg/workstation
+    runtime: nvidia
+    command: bash
+    ports:
+      - "9002:22"
+      - "7003:5920"
+    volumes:
+      - /media/home/anand:/home/anand
+      - /mnt/ssda/anand:/mnt/ssd
+      - /media/iitmcvg/VARUN_CVI:/mnt/CVI_usb
+    tty: true
+    stdin_open: true
+    environment:
+      - USERNAME=anand
+
