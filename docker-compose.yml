@@ -53,7 +53,7 @@ services:
     tty: true
     stdin_open: true
     environment:
-      - USERNAME=anand
+      - USERNAME=aravinth
 
 # Anand
   anand:
@@ -71,5 +71,5 @@ services:
     tty: true
     stdin_open: true
     environment:
-      - USERNAME=aravinth
+      - USERNAME=anand
 
