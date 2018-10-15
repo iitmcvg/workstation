@@ -15,7 +15,8 @@ services:
     volumes:
       - /media/home/varun:/home/varun
       - /mnt/ssda/varun:/mnt/ssd
-      - /media/iitmcvg/VARUN_CVI:/mnt/CVI_usb
+      - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
+      - /media/hdd2:/mnt/checkpoints_HDD
     tty: true
     stdin_open: true
     environment:
@@ -36,20 +37,39 @@ services:
       - "MINIO_SECRET_KEY=iitmcvg/minio/usb1"
       - "MINIO_ACCESS_KEY=iitmcvg"
 
+# Muthu
+  aravinth:
+    image: iitmcvg/workstation
+    runtime: nvidia
+    command: bash
+    ports:
+      - "9002:22"
+      - "9003:5920"
+    volumes:
+      - /media/home/anand:/home/anand
+      - /mnt/ssda/anand:/mnt/ssd
+      - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
+      - /media/hdd2:/mnt/checkpoints_HDD
+    tty: true
+    stdin_open: true
+    environment:
+      - USERNAME=anand
+
 # Anand
   anand:
     image: iitmcvg/workstation
     runtime: nvidia
     command: bash
     ports:
-      - "9002:22"
-      - "7003:5920"
+      - "6002:22"
+      - "6003:5920"
     volumes:
       - /media/home/anand:/home/anand
       - /mnt/ssda/anand:/mnt/ssd
-      - /media/iitmcvg/VARUN_CVI:/mnt/CVI_usb
+      - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
+      - /media/hdd2:/mnt/checkpoints_HDD
     tty: true
     stdin_open: true
     environment:
-      - USERNAME=anand
+      - USERNAME=aravinth
 
