@@ -46,8 +46,8 @@ services:
       - "9002:22"
       - "9003:5920"
     volumes:
-      - /media/home/anand:/home/anand
-      - /mnt/ssda/anand:/mnt/ssd
+      - /media/home/aravinth:/home/aravinth
+      - /mnt/ssda/aravinth:/mnt/ssd
       - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
       - /media/hdd2:/mnt/checkpoints_HDD
     tty: true
