@@ -73,6 +73,24 @@ services:
     environment:
       - USERNAME=anand
 
+# Sumanth
+  sumanth:
+    image: iitmcvg/workstation
+    runtime: nvidia
+    command: bash
+    ports:
+      - "4002:22"
+      - "4003:5920"
+    volumes:
+      - /media/home/sumanth:/home/vighnesh
+      - /mnt/ssda/sumanth:/mnt/ssd
+      - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
+      - /media/hdd2:/mnt/checkpoints_HDD
+    tty: true
+    stdin_open: true
+    environment:
+      - USERNAME=sumanth
+
 # Vighnesh
   vighnesh:
     image: iitmcvg/workstation
@@ -82,7 +100,7 @@ services:
       - "14002:22"
       - "14003:5920"
     volumes:
-      - /media/home/vignsh:/home/vighnesh
+      - /media/home/vignesh:/home/vighnesh
       - /mnt/ssda/vignesh:/mnt/ssd
       - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
       - /media/hdd2:/mnt/checkpoints_HDD
