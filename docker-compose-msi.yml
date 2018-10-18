@@ -35,20 +35,19 @@ services:
       - "MINIO_SECRET_KEY=iitmcvg/minio/msi_HDD"
       - "MINIO_ACCESS_KEY=iitmcvg"
 
-# # Anand
-#   anand:
-#     image: iitmcvg/workstation
-#     runtime: nvidia
-#     command: bash
-#     ports:
-#       - "9002:22"
-#       - "7003:5920"
-#     volumes:
-#       - /media/home/anand:/home/anand
-#       - /mnt/ssda/anand:/mnt/ssd
-#       - /media/iitmcvg/VARUN_CVI:/mnt/CVI_usb
-#     tty: true
-#     stdin_open: true
-#     environment:
-#       - USERNAME=anand
+# Anand
+  holojest:
+    image: iitmcvg/workstation
+    runtime: nvidia
+    command: bash
+    ports:
+      - "2002:22"
+      - "2003:5920"
+    volumes:
+      - /media/iitmcvgmsi/holojest:/home/holojest
+      - /media/ssda/holojest:/mnt/ssd
+    tty: true
+    stdin_open: true
+    environment:
+      - USERNAME=holojest
 
