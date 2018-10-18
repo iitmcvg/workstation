@@ -39,12 +39,12 @@ services:
 
 # Muthu
   aravinth:
-    image: iitmcvg/workstation
+    image: iitmcvg/openpose
     runtime: nvidia
     command: bash
     ports:
-      - "9002:22"
-      - "9003:5920"
+      - "6002:22"
+      - "6003:5920"
     volumes:
       - /media/home/aravinth:/home/aravinth
       - /mnt/ssda/aravinth:/mnt/ssd
@@ -61,8 +61,8 @@ services:
     runtime: nvidia
     command: bash
     ports:
-      - "6002:22"
-      - "6003:5920"
+      - "9002:22"
+      - "9003:5920"
     volumes:
       - /media/home/anand:/home/anand
       - /mnt/ssda/anand:/mnt/ssd
@@ -72,4 +72,40 @@ services:
     stdin_open: true
     environment:
       - USERNAME=anand
+
+# Sumanth
+  sumanth:
+    image: iitmcvg/workstation
+    runtime: nvidia
+    command: bash
+    ports:
+      - "4002:22"
+      - "4003:5920"
+    volumes:
+      - /media/home/sumanth:/home/vighnesh
+      - /mnt/ssda/sumanth:/mnt/ssd
+      - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
+      - /media/hdd2:/mnt/checkpoints_HDD
+    tty: true
+    stdin_open: true
+    environment:
+      - USERNAME=sumanth
+
+# Vighnesh
+  vighnesh:
+    image: iitmcvg/workstation
+    runtime: nvidia
+    command: bash
+    ports:
+      - "14002:22"
+      - "14003:5920"
+    volumes:
+      - /media/home/vignesh:/home/vighnesh
+      - /mnt/ssda/vignesh:/mnt/ssd
+      - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
+      - /media/hdd2:/mnt/checkpoints_HDD
+    tty: true
+    stdin_open: true
+    environment:
+      - USERNAME=vighnesh
 
