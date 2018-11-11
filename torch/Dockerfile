@@ -1,4 +1,4 @@
-FROM  nvcr.io/nvidia/pytorch:18.08-py3
+FROM  nvcr.io/nvidia/pytorch:18.11-py3
 LABEL maintainer caffe-maint@googlegroups.com
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y --no-install-recommends \
