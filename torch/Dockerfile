@@ -2,6 +2,7 @@ FROM  nvcr.io/nvidia/pytorch:18.08-py3
 LABEL maintainer caffe-maint@googlegroups.com
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y --no-install-recommends \
+        aria2 \
         git \
         wget \
         zsh \
@@ -32,9 +33,20 @@ add-apt-repository ppa:george-edison55/cmake-3.x && \
 apt-get install -y cmake && \
 apt-get update
 
+# Pip installs
+RUN python3 -m pip install opencv-contrib-python
 
 #ld config over ssh
 RUN ldconfig
+
+# Rmate
+RUN curl -Lo /bin/rmate https://raw.githubusercontent.com/textmate/rmate/master/bin/rmate && \
+        chmod a+x /bin/rmate
+
+# Display VNC
+RUN apt-get install -y x11vnc
+EXPOSE 5920
+ENV DISPLAY :20
 
 # Oh my zsh
 RUN ["apt-get", "update"]

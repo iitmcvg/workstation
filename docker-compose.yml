@@ -11,7 +11,7 @@ services:
     command: bash
     ports:
       - "1002:22"
-      - "1003:5920"
+      - "1003:5900"
     volumes:
       - /media/home/varun:/home/varun
       - /mnt/ssda/varun:/mnt/ssd
@@ -44,7 +44,7 @@ services:
     command: bash
     ports:
       - "6002:22"
-      - "6003:5920"
+      - "6003:5901"
     volumes:
       - /media/home/aravinth:/home/aravinth
       - /mnt/ssda/aravinth:/mnt/ssd
@@ -108,4 +108,61 @@ services:
     stdin_open: true
     environment:
       - USERNAME=vighnesh
+
+  varun_torch:
+    image: iitmcvg/torch
+    runtime: nvidia
+    command: bash
+    ports:
+      - "1004:22"
+    volumes:
+      - /media/home/varun:/home/varun
+      - /mnt/ssda/varun:/mnt/ssd
+      - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
+      - /media/hdd2:/mnt/checkpoints_HDD
+    tty: true
+    stdin_open: true
+    environment:
+      - USERNAME=varun
+
+# SLAM
+  slam:
+    image: iitmcvg/workstation-x11
+    runtime: nvidia
+    command: bash
+    ports:
+      - "15002:22"
+      - "15003:5920"
+    volumes:
+      - /media/home/slam:/home/slam
+      - /mnt/ssda/slam:/mnt/ssd
+      - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
+      - /media/hdd2:/mnt/checkpoints_HDD
+      - /tmp/.docker.xauth:/tmp/.docker.xauth
+    tty: true
+    stdin_open: true
+    environment:
+      - USERNAME=slam
+      - DISPLAY=10.21.18.200:20
+      - XAUTHORITY=/tmp/.docker.xauth
+
+# Harsha
+  harsha:
+    image: iitmcvg/workstation
+    runtime: nvidia
+    command: bash
+    ports:
+      - "16002:22"
+      - "16003:5900"
+    volumes:
+      - /media/home/harsha:/home/varun
+      - /mnt/ssda/harsha:/mnt/ssd
+      - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
+      - /media/hdd2:/mnt/checkpoints_HDD
+    tty: true
+    stdin_open: true
+    environment:
+      - USERNAME=harsha
+
+
 
