@@ -1,3 +1,4 @@
+
 version: '2.3'
 services:
   # nvidia:
@@ -13,12 +14,27 @@ services:
       - "1002:22"
       - "1003:5920"
     volumes:
-      - /media/iitmcvgmsi/varun:/home/varun
+      - /media/hdd/varun:/home/varun
       - /media/ssda/varun:/mnt/ssd/
     tty: true
     stdin_open: true
     environment:
       - USERNAME=varun
+
+  varun_torch:
+    image: iitmcvg/torch
+    runtime: nvidia
+    command: bash
+    ports:
+      - "3002:22"
+      - "3003:5920"
+    volumes:
+      - /media/hdd/varun:/home/varun/
+      - /media/ssda/varun:/mnt/ssd/
+    tty: true
+    stdin_open: true
+    environment:
+      - USERNAME=varun 
 
   minio:
     image: minio/minio
@@ -26,7 +42,7 @@ services:
     ports:
       - "9000:9000"
     volumes:
-      - /media/iitmcvgmsi:/data
+      - /media/hdd:/data
       - /media/minio_config:/root/.minio 
     tty: true
     stdin_open: false
@@ -35,20 +51,18 @@ services:
       - "MINIO_SECRET_KEY=iitmcvg/minio/msi_HDD"
       - "MINIO_ACCESS_KEY=iitmcvg"
 
-# # Anand
-#   anand:
-#     image: iitmcvg/workstation
-#     runtime: nvidia
-#     command: bash
-#     ports:
-#       - "9002:22"
-#       - "7003:5920"
-#     volumes:
-#       - /media/home/anand:/home/anand
-#       - /mnt/ssda/anand:/mnt/ssd
-#       - /media/iitmcvg/VARUN_CVI:/mnt/CVI_usb
-#     tty: true
-#     stdin_open: true
-#     environment:
-#       - USERNAME=anand
-
+# Anand
+  holojest:
+    image: iitmcvg/workstation
+    runtime: nvidia
+    command: bash
+    ports:
+      - "2002:22"
+      - "2003:5920"
+    volumes:
+      - /media/hdd/holojest:/home/holojest
+      - /media/ssda/holojest:/mnt/ssd
+    tty: true
+    stdin_open: true
+    environment:
+      - USERNAME=holojest
