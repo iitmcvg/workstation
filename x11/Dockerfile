@@ -1,4 +1,4 @@
-FROM  nvcr.io/nvidia/tensorflow:18.11-py3
+FROM  nvcr.io/nvidia/tensorflow:18.08-py3
 LABEL maintainer caffe-maint@googlegroups.com 
 
 
@@ -21,7 +21,8 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y --no-ins
         wget \
         tmux \
         openssh-server \
-        curl &&\
+        curl \
+        python3-tk &&\
         rm -rf /var/lib/apt/lists/* &&\
         apt-get clean
 
@@ -58,10 +59,10 @@ RUN curl -Lo /bin/rmate https://raw.githubusercontent.com/textmate/rmate/master/
 # Display VNC
 RUN apt-get install -y x11vnc
 EXPOSE 5920
-ENV DISPLAY :20
+ENV DISPLAY 10.21.18.200:20
 
 # Entrypoint
-COPY entrypoint.sh /usr/local/bin/entrypoint.sh
+COPY x11/entrypoint.sh /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["sh","/usr/local/bin/entrypoint.sh"]
 
 WORKDIR /workspace
