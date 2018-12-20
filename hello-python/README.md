@@ -25,7 +25,18 @@ https://download.docker.com/mac/stable/Docker.dmg
 
 * Run the command **docker-machine ip** and make a note of the IP address shown as output. You can skip this if you are on macOS or Ubuntu.
 
-* Run the container:
+#### Load Image from Pendrive (optional, if no internet available)
+
+* Move `sampark.tgz` to a convinient directory (ensure you can `cd` into it).
+
+* Run:
+```
+docker load < /path/to/sampark.tgz
+```
+
+#### Download from dockerhub (needs internet)
+
+* Run the command:
 ```
 docker run -it --name sampark --rm -p 8888:8888 iitmcvg/py36:lite
 ```
