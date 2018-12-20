@@ -27,6 +27,8 @@ https://download.docker.com/mac/stable/Docker.dmg
 
 #### Load Image from Pendrive (optional, if no internet available)
 
+*Tar file for reference: [link](https://drive.google.com/file/d/1fLrKgbdJ-br0b-JK6rQr7LL8p_e4C4Wn/view?usp=sharing)*
+
 * Move `sampark.tgz` to a convinient directory (ensure you can `cd` into it).
 
 * Run:
