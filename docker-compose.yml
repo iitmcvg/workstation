@@ -1,9 +1,11 @@
 version: '2.3'
 services:
-  # nvidia:
-  #   image: nvidia/cuda
-  #   runtime: nvidia
-  #   command: nvidia-smi
+  nvidia:
+    image: nvidia/cuda
+    runtime: nvidia
+    command: nvidia-smi
+    device:
+      - /dev/nvidia2
 # Varun
   varun:
     image: iitmcvg/workstation
@@ -126,43 +128,43 @@ services:
       - USERNAME=varun
 
 # SLAM
-  slam:
-    image: iitmcvg/workstation-x11
-    runtime: nvidia
-    command: bash
-    ports:
-      - "15002:22"
-      - "15003:5920"
-    volumes:
-      - /media/home/slam:/home/slam
-      - /mnt/ssda/slam:/mnt/ssd
-      - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
-      - /media/hdd2:/mnt/checkpoints_HDD
-      - /tmp/.docker.xauth:/tmp/.docker.xauth
-    tty: true
-    stdin_open: true
-    environment:
-      - USERNAME=slam
-      - DISPLAY=10.21.18.200:20
-      - XAUTHORITY=/tmp/.docker.xauth
+#   slam:
+#     image: iitmcvg/workstation-x11
+#     runtime: nvidia
+#     command: bash
+#     ports:
+#       - "15002:22"
+#       - "15003:5920"
+#     volumes:
+#       - /media/home/slam:/home/slam
+#       - /mnt/ssda/slam:/mnt/ssd
+#       - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
+#       - /media/hdd2:/mnt/checkpoints_HDD
+#       - /tmp/.docker.xauth:/tmp/.docker.xauth
+#     tty: true
+#     stdin_open: true
+#     environment:
+#       - USERNAME=slam
+#       - DISPLAY=10.21.18.200:20
+#       - XAUTHORITY=/tmp/.docker.xauth
 
-# Harsha
-  harsha:
-    image: iitmcvg/workstation
-    runtime: nvidia
-    command: bash
-    ports:
-      - "16002:22"
-      - "16003:5900"
-    volumes:
-      - /media/home/harsha:/home/varun
-      - /mnt/ssda/harsha:/mnt/ssd
-      - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
-      - /media/hdd2:/mnt/checkpoints_HDD
-    tty: true
-    stdin_open: true
-    environment:
-      - USERNAME=harsha
+# # Harsha
+#   harsha:
+#     image: iitmcvg/workstation
+#     runtime: nvidia
+#     command: bash
+#     ports:
+#       - "16002:22"
+#       - "16003:5900"
+#     volumes:
+#       - /media/home/harsha:/home/varun
+#       - /mnt/ssda/harsha:/mnt/ssd
+#       - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
+#       - /media/hdd2:/mnt/checkpoints_HDD
+#     tty: true
+#     stdin_open: true
+#     environment:
+#       - USERNAME=harsha
 
 
 
