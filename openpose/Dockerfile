@@ -14,6 +14,9 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y --no-ins
         libeigen3-dev \
         libopencv-dev \
 	openssl \
+        apt-utils \
+        lsb-core \
+        libatlas-base-dev \
         libcurl4-gnutls-dev \
         wget \
         openssh-server \
@@ -21,6 +24,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y --no-ins
         rm -rf /var/lib/apt/lists/* &&\
         apt-get clean
 
+RUN pip install opencv-contrib-python
 
 RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364FD4036A9C25BF357DD4 && \
     curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/download/1.10/gosu-$(dpkg --print-architecture)" \
