@@ -5,17 +5,14 @@ LABEL maintainer caffe-maint@googlegroups.com
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y --no-install-recommends \
         git \
         wget \
-	fuse \
-	snapd \
-	snap-confine \ 
-	squashfuse \ 
 	zsh \
         vim \
         sudo \
         zsh \
         htop \
         imagemagick \
-        fdupes \
+        libeigen3-dev \
+        libopencv-dev \
 	openssl \
         libcurl4-gnutls-dev \
         wget \
@@ -49,7 +46,8 @@ RUN cd openpose && \
         cmake -DOpenCV_INCLUDE_DIRS=/home/"${USERNAME}"/softwares/opencv/build/install/include \
   -DOpenCV_LIBS_DIR=/home/"${USERNAME}"/softwares/opencv/build/install/lib \
   -DCaffe_INCLUDE_DIRS=/home/"${USERNAME}"/softwares/caffe/build/install/include \
-  -DCaffe_LIBS=/home/"${USERNAME}"/softwares/caffe/build/install/lib/libcaffe.so -DBUILD_CAFFE=OFF ..
+  -DCaffe_LIBS=/home/"${USERNAME}"/softwares/caffe/build/install/lib/libcaffe.so -DBUILD_CAFFE=OFF \
+  -WITH_EIGEN ..
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["sh","/usr/local/bin/entrypoint.sh"]
