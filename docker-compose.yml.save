@@ -24,11 +24,9 @@ services:
       - "1002:22"
     volumes:
       - /media/home/varun:/home/varun
-      - /media/home/uav:/mnt/uav
       - /media/ssda/varun:/mnt/ssd
       - /media/iitmcvg/VARUN_CVI1:/mnt/dataset_HDD
       - /media/hdd2/varun:/mnt/checkpoints_HDD
-      - /media/hdd2/uav:/mnt/uav_ckpt
     tty: true
     stdin_open: true
     environment:
@@ -74,7 +72,7 @@ services:
     stdin_open: true
     environment:
       - USERNAME=rajat
-      #- NVIDIA_VISIBLE_DEVICES=2
+      ###- NVIDIA_VISIBLE_DEVICES=2
 # Minio Servers
   minio:
     image: minio/minio
@@ -111,7 +109,6 @@ services:
 # UAV
   uav:
     image: iitmcvg/workstation
-    build: .
     runtime: nvidia
     command: bash
     mem_limit: 48m
@@ -131,7 +128,6 @@ services:
 # Anand
   anand:
     image: iitmcvg/workstation
-    build: .
     runtime: nvidia
     command: bash
     ports:
@@ -149,7 +145,6 @@ services:
 # Sumanth
   sumanth:
     image: iitmcvg/workstation
-    build: .
     runtime: nvidia
     command: bash
     ports:
@@ -167,7 +162,6 @@ services:
 # Vighnesh
   vighnesh:
     image: iitmcvg/workstation
-    build: .
     runtime: nvidia
     command: bash
     ports:
@@ -223,26 +217,6 @@ services:
 #     stdin_open: true
 #     environment:
 #       - USERNAME=harsha
-
-# contest
-  contest:
-    image: iitmcvg/workstation
-    build: .
-    runtime: nvidia
-    command: bash
-    ports:
-      - "12002:22"
-    volumes:
-      - /media/home/varun:/home/contest
-      - /media/home/uav:/mnt/uav
-      - /media/ssda/varun:/mnt/ssd
-      - /media/iitmcvg/VARUN_CVI1:/mnt/dataset_HDD
-      - /media/hdd2/varun:/mnt/checkpoints_HDD
-      - /media/hdd2/uav:/mnt/uav_ckpt
-    tty: true
-    stdin_open: true
-    environment:
-      - USERNAME=contest
 
 
 

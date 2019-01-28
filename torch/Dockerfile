@@ -1,4 +1,4 @@
-FROM  nvcr.io/nvidia/pytorch:18.11-py3
+FROM  nvcr.io/nvidia/pytorch:18.12-py3
 LABEL maintainer caffe-maint@googlegroups.com
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y --no-install-recommends \
@@ -31,8 +31,8 @@ RUN apt-get update && \
 apt-get install -y software-properties-common && \
 add-apt-repository ppa:george-edison55/cmake-3.x && \
 apt-get install -y cmake && \
-apt-get update
-
+apt-get update &&\
+apt-get install -y tmux # install tmux
 # Pip installs
 RUN python3 -m pip install opencv-contrib-python
 

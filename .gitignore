@@ -1,3 +1,4 @@
 # Bluespec mount
 
+*.tgz
 bluespec-mount/*

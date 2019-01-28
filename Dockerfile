@@ -1,14 +1,10 @@
-FROM  nvcr.io/nvidia/tensorflow:18.11-py3
+FROM  nvcr.io/nvidia/tensorflow:18.12-py3
 LABEL maintainer caffe-maint@googlegroups.com 
 
 
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y --no-install-recommends \
         aria2 \
         git \
-	fuse \
-	snapd \
-	snap-confine \ 
-	squashfuse \ 
 	zsh \
         vim \
         sudo \
@@ -42,7 +38,6 @@ apt-get update
 # Pip installs
 RUN python3 -m pip install opencv-contrib-python
 
-
 #ld config over ssh
 RUN ldconfig
 
@@ -54,11 +49,6 @@ RUN wget https://github.com/robbyrussell/oh-my-zsh/raw/master/tools/install.sh -
 # Rmate
 RUN curl -Lo /bin/rmate https://raw.githubusercontent.com/textmate/rmate/master/bin/rmate && \
         chmod a+x /bin/rmate
-
-# Display VNC
-RUN apt-get install -y x11vnc
-EXPOSE 5920
-ENV DISPLAY :20
 
 # Entrypoint
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
