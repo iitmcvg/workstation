@@ -26,7 +26,7 @@ services:
       - /media/home/varun:/home/varun
       - /media/home/uav:/mnt/uav
       - /media/ssda/varun:/mnt/ssd
-      - /media/iitmcvg/VARUN_CVI1:/mnt/dataset_HDD
+      - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
       - /media/hdd2/varun:/mnt/checkpoints_HDD
       - /media/hdd2/uav:/mnt/uav_ckpt
     tty: true
@@ -44,11 +44,11 @@ services:
     command: zsh
     shm_size: 59G
     ports:
-      - "2002:22"
+      - "1006:22"
     volumes:
       - /media/home/varun:/home/varun
       - /media/ssda/varun:/mnt/ssd
-      - /media/iitmcvg/VARUN_CVI1:/mnt/dataset_HDD
+      - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
       - /media/hdd2/varun:/mnt/checkpoints_HDD
     tty: true
     stdin_open: true
@@ -68,7 +68,7 @@ services:
     volumes:
       - /media/home/rajat:/home/rajat
       - /media/ssda/rajat:/mnt/ssd
-      - /media/iitmcvg/VARUN_CVI1:/mnt/dataset_HDD
+      - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
       - /media/hdd2/rajat:/mnt/checkpoints_HDD
     tty: true
     stdin_open: true
@@ -82,7 +82,7 @@ services:
     ports:
       - "9000:9000"
     volumes:
-      - /media/iitmcvg/VARUN_CVI1:/data
+      - /media/iitmcvg/VARUN_CVI:/data
       - /mnt/config:/root/.minio 
     tty: true
     stdin_open: false
@@ -93,7 +93,10 @@ services:
 
 # Muthu
   aravinth:
-    image: iitmcvg/openpose
+    # image: iitmcvg/openpose
+    build:
+      context: .
+      dockerfile: openpose/Dockerfile
     runtime: nvidia
     command: bash
     ports:
@@ -101,12 +104,20 @@ services:
     volumes:
       - /media/home/aravinth:/home/aravinth
       - /media/ssda/aravinth:/mnt/ssd
-      - /media/iitmcvg/VARUN_CVI1:/mnt/dataset_HDD
+      - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
       - /media/hdd2/aravinth:/mnt/checkpoints_HDD
     tty: true
     stdin_open: true
     environment:
       - USERNAME=aravinth
+
+# Muthu
+  nvcaffe:
+    image: nvcr.io/nvidia/caffe:19.01-py2
+    runtime: nvidia
+    command: bash
+    tty: true
+    stdin_open: true
 
 # UAV
   uav:
@@ -120,7 +131,7 @@ services:
     volumes:
       - /media/home/uav:/home/uav
       - /media/ssda/uav:/mnt/ssd
-      - /media/iitmcvg/VARUN_CVI1:/mnt/dataset_HDD
+      - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
       - /media/hdd2/uav:/mnt/checkpoints_HDD
     tty: true
     stdin_open: true
@@ -139,7 +150,7 @@ services:
     volumes:
       - /media/home/anand:/home/anand
       - /media/ssda/anand:/mnt/ssd
-      - /media/iitmcvg/VARUN_CVI1:/mnt/dataset_HDD
+      - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
       - /media/hdd2/anand:/mnt/checkpoints_HDD
     tty: true
     stdin_open: true
@@ -157,7 +168,7 @@ services:
     volumes:
       - /media/home/sumanth:/home/vighnesh
       - /media/ssda/sumanth:/mnt/ssd
-      - /media/iitmcvg/VARUN_CVI1:/mnt/dataset_HDD
+      - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
       - /media/hdd2/sumanth:/mnt/checkpoints_HDD
     tty: true
     stdin_open: true
@@ -176,7 +187,7 @@ services:
     volumes:
       - /media/home/vignesh:/home/vighnesh
       - /media/ssda/vignesh:/mnt/ssd
-      - /media/iitmcvg/VARUN_CVI1:/mnt/dataset_HDD
+      - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
       - /media/hdd2/vighnesh:/mnt/checkpoints_HDD
     tty: true
     stdin_open: true
@@ -196,7 +207,7 @@ services:
 #     volumes:
 #       - /media/home/slam:/home/slam
 #       - /mnt/ssda/slam:/mnt/ssd
-#       - /media/iitmcvg/VARUN_CVI1:/mnt/dataset_HDD
+#       - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
 #       - /media/hdd2:/mnt/checkpoints_HDD
 #       - /tmp/.docker.xauth:/tmp/.docker.xauth
 #     tty: true
@@ -217,32 +228,11 @@ services:
 #     volumes:
 #       - /media/home/harsha:/home/varun
 #       - /mnt/ssda/harsha:/mnt/ssd
-#       - /media/iitmcvg/VARUN_CVI1:/mnt/dataset_HDD
+#       - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
 #       - /media/hdd2:/mnt/checkpoints_HDD
 #     tty: true
 #     stdin_open: true
 #     environment:
 #       - USERNAME=harsha
-
-# contest
-  contest:
-    image: iitmcvg/workstation
-    build: .
-    runtime: nvidia
-    command: bash
-    ports:
-      - "12002:22"
-    volumes:
-      - /media/home/varun:/home/contest
-      - /media/home/uav:/mnt/uav
-      - /media/ssda/varun:/mnt/ssd
-      - /media/iitmcvg/VARUN_CVI1:/mnt/dataset_HDD
-      - /media/hdd2/varun:/mnt/checkpoints_HDD
-      - /media/hdd2/uav:/mnt/uav_ckpt
-    tty: true
-    stdin_open: true
-    environment:
-      - USERNAME=contest
-
 
 
