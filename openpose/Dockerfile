@@ -94,7 +94,7 @@ RUN cd openpose && \
   -DOpenCV_LIBS_DIR=/usr/local/lib \
   -DCaffe_INCLUDE_DIRS=/usr/local/include \
   -DCaffe_LIBS=/usr/local/lib/libcaffe.so -DBUILD_CAFFE=OFF \
-  -WITH_EIGEN ..
+  -WITH_EIGEN .. && make -j12
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["sh","/usr/local/bin/entrypoint.sh"]

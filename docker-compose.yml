@@ -14,40 +14,21 @@ services:
   #     - NVIDIA_VISIBLE_DEVICES=2
   #   tty: true
   #   stdin_open: true
-# Varun
-  varun:
-    image: iitmcvg/workstation
-    build: .
-    runtime: nvidia
-    command: bash
-    ports:
-      - "1002:22"
-    volumes:
-      - /media/home/varun:/home/varun
-      - /media/home/uav:/mnt/uav
-      - /media/ssda/varun:/mnt/ssd
-      - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
-      - /media/hdd2/varun:/mnt/checkpoints_HDD
-      - /media/hdd2/uav:/mnt/uav_ckpt
-    tty: true
-    stdin_open: true
-    environment:
-      - USERNAME=varun
 
 # Varun torch
   varun_torch:
     image: iitmcvg/torch
     build:
       context: .
-      dockerfile: torch/Dockerfile
+      dockerfile: torch-Dockerfile
     runtime: nvidia
     command: zsh
     shm_size: 59G
     ports:
-      - "1006:22"
+      - "1002:22"
     volumes:
       - /media/home/varun:/home/varun
-      - /media/ssda/varun:/mnt/ssd
+      - /media/ssda:/mnt/ssd
       - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
       - /media/hdd2/varun:/mnt/checkpoints_HDD
     tty: true
@@ -55,6 +36,26 @@ services:
     environment:
       - USERNAME=varun
 
+# Lokesh
+  lokesh:
+    image: iitmcvg/workstation
+    build: 
+      context: .
+      dockerfile: tf-Dockerfile
+    runtime: nvidia
+    command: bash
+    ports:
+      - "2002:22"                                                                                                                         
+    volumes:
+      - /media/home/lokesh:/home/lokesh
+      - /media/ssda/lokesh:/mnt/ssd
+      - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
+      - /media/hdd2/lokesh:/mnt/checkpoints_HDD
+    tty: true
+    stdin_open: true
+    environment:
+      - USERNAME=vighnesh
+  
 # Rajat
   rajat:
     image: iitmcvg/torch
@@ -74,7 +75,7 @@ services:
     stdin_open: true
     environment:
       - USERNAME=rajat
-      #- NVIDIA_VISIBLE_DEVICES=2
+
 # Minio Servers
   minio:
     image: minio/minio
@@ -91,76 +92,12 @@ services:
       - "MINIO_SECRET_KEY=iitmcvg/minio/usb1"
       - "MINIO_ACCESS_KEY=iitmcvg"
 
-# Muthu
-  aravinth:
-    # image: iitmcvg/openpose
-    build:
-      context: .
-      dockerfile: openpose/Dockerfile
-    runtime: nvidia
-    command: bash
-    ports:
-      - "6002:22"
-    volumes:
-      - /media/home/aravinth:/home/aravinth
-      - /media/ssda/aravinth:/mnt/ssd
-      - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
-      - /media/hdd2/aravinth:/mnt/checkpoints_HDD
-    tty: true
-    stdin_open: true
-    environment:
-      - USERNAME=aravinth
-
-# Muthu
-  nvcaffe:
-    image: nvcr.io/nvidia/caffe:19.01-py2
-    runtime: nvidia
-    command: bash
-    tty: true
-    stdin_open: true
-
-# UAV
-  uav:
-    image: iitmcvg/workstation
-    build: .
-    runtime: nvidia
-    command: bash
-    mem_limit: 48m
-    ports:
-      - "7002:22"
-    volumes:
-      - /media/home/uav:/home/uav
-      - /media/ssda/uav:/mnt/ssd
-      - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
-      - /media/hdd2/uav:/mnt/checkpoints_HDD
-    tty: true
-    stdin_open: true
-    environment:
-      - USERNAME=uav
-      - NVIDIA_VISIBLE_DEVICES=2
-
-# Anand
-  anand:
-    image: iitmcvg/workstation
-    build: .
-    runtime: nvidia
-    command: bash
-    ports:
-      - "9002:22"
-    volumes:
-      - /media/home/anand:/home/anand
-      - /media/ssda/anand:/mnt/ssd
-      - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
-      - /media/hdd2/anand:/mnt/checkpoints_HDD
-    tty: true
-    stdin_open: true
-    environment:
-      - USERNAME=anand
-
 # Sumanth
   sumanth:
     image: iitmcvg/workstation
-    build: .
+    build:
+      context: .
+      dockerfile: torch-Dockerfile
     runtime: nvidia
     command: bash
     ports:
@@ -174,65 +111,3 @@ services:
     stdin_open: true
     environment:
       - USERNAME=sumanth
-
-# Vighnesh
-  vighnesh:
-    image: iitmcvg/workstation
-    build: .
-    runtime: nvidia
-    command: bash
-    ports:
-      - "14002:22"
-      - "14003:5920"
-    volumes:
-      - /media/home/vignesh:/home/vighnesh
-      - /media/ssda/vignesh:/mnt/ssd
-      - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
-      - /media/hdd2/vighnesh:/mnt/checkpoints_HDD
-    tty: true
-    stdin_open: true
-    environment:
-      - USERNAME=vighnesh
-
-  
-
-# SLAM
-#   slam:
-#     image: iitmcvg/workstation-x11
-#     runtime: nvidia
-#     command: bash
-#     ports:
-#       - "15002:22"
-#       - "15003:5920"
-#     volumes:
-#       - /media/home/slam:/home/slam
-#       - /mnt/ssda/slam:/mnt/ssd
-#       - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
-#       - /media/hdd2:/mnt/checkpoints_HDD
-#       - /tmp/.docker.xauth:/tmp/.docker.xauth
-#     tty: true
-#     stdin_open: true
-#     environment:
-#       - USERNAME=slam
-#       - DISPLAY=10.21.18.200:20
-#       - XAUTHORITY=/tmp/.docker.xauth
-
-# # Harsha
-#   harsha:
-#     image: iitmcvg/workstation
-#     runtime: nvidia
-#     command: bash
-#     ports:
-#       - "16002:22"
-#       - "16003:5900"
-#     volumes:
-#       - /media/home/harsha:/home/varun
-#       - /mnt/ssda/harsha:/mnt/ssd
-#       - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
-#       - /media/hdd2:/mnt/checkpoints_HDD
-#     tty: true
-#     stdin_open: true
-#     environment:
-#       - USERNAME=harsha
-
-

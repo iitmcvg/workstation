@@ -1,24 +1,5 @@
 FROM nvidia/cuda:8.0-cudnn5-devel   
 # start with the nvidia container for cuda 8 with cudnn 5
-
-# forked from https://github.com/mjsobrep/DockerFiles-public
-LABEL maintainer "Gary Feng <gary.feng@gmail.com>"
-
-RUN apt-get update -y && apt-get upgrade -y
-RUN apt-get install wget unzip lsof apt-utils lsb-core -y
-RUN apt-get install libatlas-base-dev -y
-RUN apt-get install libopencv-dev python-opencv python-pip -y   
-
-RUN wget https://github.com/CMU-Perceptual-Computing-Lab/openpose/archive/master.zip; \
-    unzip master.zip; rm master.zip
-
-WORKDIR openpose-master
-RUN sed -i 's/\<sudo chmod +x $1\>//g' ubuntu/install_caffe_and_openpose_if_cuda8.sh; \
-    sed -i 's/\<sudo chmod +x $1\>//g' ubuntu/install_openpose_if_cuda8.sh; \
-    sed -i 's/\<sudo -H\>//g' 3rdparty/caffe/install_caffe_if_cuda8.sh; \
-    sed -i 's/\<sudo\>//g' 3rdparty/caffe/install_caffe_if_cuda8.sh; \
-    sync; sleep 1; ./ubuntu/install_caffe_and_openpose_if_cuda8.sh
-
 RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y --no-install-recommends \
         git \
         wget \
@@ -51,6 +32,14 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update && apt-get install -y --no-ins
         curl unzip &&\
         rm -rf /var/lib/apt/lists/* &&\
         apt-get clean
+
+RUN apt-get update -y && apt-get upgrade -y && \
+apt-get install -y libgoogle-glog-dev wget unzip lsof apt-utils lsb-core \
+libatlas-base-dev libhdf5-dev libopencv-dev libblkid-dev e2fslibs-dev libboost-all-dev libaudit-dev protobuf-compiler python-opencv python-pip && \
+apt-get install -y software-properties-common && \
+add-apt-repository ppa:george-edison55/cmake-3.x && \
+apt-get install -y cmake && \
+apt-get update
 
 # Opencv Build
 WORKDIR /
@@ -92,12 +81,6 @@ RUN gpg --keyserver ha.pool.sks-keyservers.net --recv-keys B42F6819007F00F88E364
                 && rm /usr/local/bin/gosu.asc \
                     && chmod +x /usr/local/bin/gosu
 
-RUN apt-get update && \
-apt-get install -y software-properties-common && \
-add-apt-repository ppa:george-edison55/cmake-3.x && \
-apt-get install -y cmake && \
-apt-get update
-
 #ld config over ssh
 RUN ldconfig
 
@@ -109,9 +92,10 @@ RUN cd openpose && \
         cd build  && \
         cmake -DOpenCV_INCLUDE_DIRS=/usr/local/include \
   -DOpenCV_LIBS_DIR=/usr/local/lib \
-  -DCaffe_INCLUDE_DIRS=/usr/local/include \
-  -DCaffe_LIBS=/usr/local/lib/libcaffe.so -DBUILD_CAFFE=OFF \
+  -DBUILD_CAFFE=ON \
   -WITH_EIGEN ..
+#  && \
+  # make -j12
 
 COPY entrypoint.sh /usr/local/bin/entrypoint.sh
 ENTRYPOINT ["sh","/usr/local/bin/entrypoint.sh"]
