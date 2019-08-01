@@ -38,37 +38,37 @@ services:
 
 # Lokesh
   lokesh:
-    image: iitmcvg/workstation
+    image: iitmcvg/torch
     build: 
       context: .
-      dockerfile: tf-Dockerfile
+      dockerfile: torch-Dockerfile
     runtime: nvidia
     command: bash
     ports:
       - "2002:22"                                                                                                                         
     volumes:
       - /media/home/lokesh:/home/lokesh
-      - /media/ssda/lokesh:/mnt/ssd
+      - /media/ssda:/mnt/ssd
       - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
       - /media/hdd2/lokesh:/mnt/checkpoints_HDD
     tty: true
     stdin_open: true
     environment:
-      - USERNAME=vighnesh
+      - USERNAME=lokesh
   
 # Rajat
   rajat:
     image: iitmcvg/torch
     build:
       context: .
-      dockerfile: torch/Dockerfile
+      dockerfile: torch-Dockerfile
     runtime: nvidia
     command: bash
     ports:
       - "5002:22"
     volumes:
       - /media/home/rajat:/home/rajat
-      - /media/ssda/rajat:/mnt/ssd
+      - /media/ssda:/mnt/ssd
       - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
       - /media/hdd2/rajat:/mnt/checkpoints_HDD
     tty: true
@@ -104,10 +104,30 @@ services:
       - "4002:22"
     volumes:
       - /media/home/sumanth:/home/vighnesh
-      - /media/ssda/sumanth:/mnt/ssd
+      - /media/ssda:/mnt/ssd
       - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
       - /media/hdd2/sumanth:/mnt/checkpoints_HDD
     tty: true
     stdin_open: true
     environment:
       - USERNAME=sumanth
+
+# Uav
+  uav:
+    image: iitmcvg/workstation
+    build:
+      context: .
+      dockerfile: tf-Dockerfile
+    runtime: nvidia
+    command: zsh
+    ports:
+      - "7002:22"
+    volumes:
+      - /media/home/uav:/home/uav
+      - /media/ssda:/mnt/ssd
+      - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
+      - /media/hdd2/uav:/mnt/checkpoints_HDD
+    tty: true
+    stdin_open: true
+    environment:
+      - USERNAME=uav
