@@ -55,6 +55,26 @@ services:
     stdin_open: true
     environment:
       - USERNAME=lokesh
+
+# Siddharth
+  sid:
+    image: iitmcvg/torch
+    build:
+      context: .
+      dockerfile: torch-Dockerfile
+    runtime: nvidia
+    command: bash
+    ports:
+      - "3002:22"
+    volumes:
+      - /media/home/sid:/home/sid
+      - /media/ssda:/mnt/ssd
+      - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
+      - /media/hdd2/sid:/mnt/checkpoints_HDD
+    tty: true
+    stdin_open: true
+    environment:
+      - USERNAME=sid
   
 # Rajat
   rajat:
@@ -97,7 +117,7 @@ services:
     image: iitmcvg/workstation
     build:
       context: .
-      dockerfile: torch-Dockerfile
+      dockerfile: tf-Dockerfile
     runtime: nvidia
     command: bash
     ports:
@@ -111,6 +131,28 @@ services:
     stdin_open: true
     environment:
       - USERNAME=sumanth
+
+
+
+# carla
+  carla:
+    image: iitmcvg/torch
+    build:
+      context: .
+      dockerfile: torch-Dockerfile
+    runtime: nvidia
+    command: bash
+    ports:
+      - "6002:22"
+    volumes:
+      - /media/home/carla:/home/carla
+      - /media/ssda:/mnt/ssd
+      - /media/iitmcvg/VARUN_CVI:/mnt/dataset_HDD
+      - /media/hdd2/carla:/mnt/checkpoints_HDD
+    tty: true
+    stdin_open: true
+    environment:
+      - USERNAME=carla
 
 # Uav
   uav:
